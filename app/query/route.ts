@@ -14,13 +14,17 @@ export async function listInvoices() {
 }
 
 export async function GET() {
-  // return Response.json({
-  //   message:
-  //     "Uncomment this file and remove this line. You can delete this file when you are finished.",
-  // });
   try {
-    return Response.json(await listInvoices());
+    const data = await listInvoices();
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    console.error("Error fetching invoices:", error);
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
